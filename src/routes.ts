@@ -5,7 +5,7 @@ import { verifyAdmin } from './common/middleware/auth';
 
 const router = Router();
 
-router.use('/users', userRouter);
-router.use('/blogs', blogRouter);
+router.use('/user', userRouter);
+router.use('/blog', blogRouter);
 
 export default router;

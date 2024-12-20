@@ -25,7 +25,7 @@ export class BlogService {
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);
-			return ServiceResponse.failure("An error occurred while login.", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure("An error occurred while blog creating.", null, StatusCodes.INTERNAL_SERVER_ERROR);
 		}
 	}
 	async update(id: string, blogInput: BlogType): Promise<ServiceResponse<ApiResponse | null>> {
@@ -34,7 +34,7 @@ export class BlogService {
 				return ServiceResponse.failure("Invalid Id or Blog", { msg: 'Invalid id or blog', status: false, data: null }, StatusCodes.BAD_REQUEST);
 			}
 			let blog: BlogType | null = await Blog.findById(id);
-			if (!blog) {
+			if (!blog || blog?.deletedOn) {
 				return ServiceResponse.failure("Blog not found", { msg: 'Blog not found', status: false, data: null }, StatusCodes.NOT_FOUND);
 			}
 			if (blogInput.title) {
@@ -51,7 +51,7 @@ export class BlogService {
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);
-			return ServiceResponse.failure("An error occurred while login.", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure("An error occurred while blog updating.", null, StatusCodes.INTERNAL_SERVER_ERROR);
 		}
 	}
 	async delete(id: string): Promise<ServiceResponse<ApiResponse | null>> {
@@ -70,7 +70,7 @@ export class BlogService {
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);
-			return ServiceResponse.failure("An error occurred while login.", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure("An error occurred while blog deleting.", null, StatusCodes.INTERNAL_SERVER_ERROR);
 		}
 	}
 	async showAll(): Promise<ServiceResponse<ApiResponse | null>> {
@@ -80,7 +80,7 @@ export class BlogService {
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);
-			return ServiceResponse.failure("An error occurred while login.", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure("An error occurred while blog listing.", null, StatusCodes.INTERNAL_SERVER_ERROR);
 		}
 	}
 	async showAllActive(id: string): Promise<ServiceResponse<ApiResponse | null>> {
@@ -90,7 +90,7 @@ export class BlogService {
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);
-			return ServiceResponse.failure("An error occurred while login.", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure("An error occurred while blog listing.", null, StatusCodes.INTERNAL_SERVER_ERROR);
 		}
 	}
 	async showOne(id: string): Promise<ServiceResponse<ApiResponse | null>> {
@@ -98,7 +98,7 @@ export class BlogService {
 			if (!id || !isValidObjectId(id)) {
 				return ServiceResponse.failure("Invalid Id", { msg: 'Invalid id', status: false, data: null }, StatusCodes.BAD_REQUEST);
 			}
-			let blog: BlogType | null = await Blog.findById(id).lean();
+			let blog: BlogType | null = await Blog.findOne({ $and: [{ _id: id }, { $or: [{ deletedOn: null }, { deletedOn: { $exists: false } }] }] }).lean();
 			if (!blog) {
 				return ServiceResponse.failure("Blog not found", { msg: 'Blog not found', status: false, data: null }, StatusCodes.NOT_FOUND);
 			}
@@ -106,7 +106,7 @@ export class BlogService {
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);
-			return ServiceResponse.failure("An error occurred while login.", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure("An error occurred while blog listing.", null, StatusCodes.INTERNAL_SERVER_ERROR);
 		}
 	}
 	async showOneActive(id: string): Promise<ServiceResponse<ApiResponse | null>> {
@@ -122,7 +122,7 @@ export class BlogService {
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);
-			return ServiceResponse.failure("An error occurred while login.", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure("An error occurred while blog listing.", null, StatusCodes.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

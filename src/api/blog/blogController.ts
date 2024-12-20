@@ -14,23 +14,26 @@ class BlogController {
 		return handleServiceResponse(serviceResponse, res)
 	}
 	public delete: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await blogService.delete(req.body);
+		const id = req.body.id;
+		const serviceResponse = await blogService.delete(id);
 		return handleServiceResponse(serviceResponse, res)
 	}
 	public showAll: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await blogService.delete(req.body);
+		const serviceResponse = await blogService.showAll(req.body);
 		return handleServiceResponse(serviceResponse, res)
 	}
 	public showOne: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await blogService.delete(req.body);
+		const id = req.body.id;
+		const serviceResponse = await blogService.showOne(id);
 		return handleServiceResponse(serviceResponse, res)
 	}
 	public showAllActive: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await blogService.delete(req.body);
+		const serviceResponse = await blogService.showAllActive(req.body);
 		return handleServiceResponse(serviceResponse, res)
 	}
 	public showOneActive: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await blogService.delete(req.body);
+		const id = req.body.id;
+		const serviceResponse = await blogService.showOneActive(id);
 		return handleServiceResponse(serviceResponse, res)
 	}
 }
