@@ -1,10 +1,16 @@
 import express, { type Router } from "express";
-import { userController } from "./userController";
+import { blogController } from "./blogController";
+import { verifyAdmin } from "@/common/middleware/auth";
 
 
-const userRouter: Router = express.Router();
+const blogRouter: Router = express.Router();
 
-userRouter.post("/signIn", userController.signIn)
-userRouter.post("/signUp", userController.signUp)
+blogRouter.post("/create", verifyAdmin, blogController.create)
+blogRouter.post("/update", verifyAdmin, blogController.update)
+blogRouter.post("/delete", verifyAdmin, blogController.delete)
+blogRouter.post("/show", verifyAdmin, blogController.showOne)
+blogRouter.post("/show-all", verifyAdmin, blogController.showAll)
+blogRouter.get("/show-all-active", blogController.showAllActive) //Show to user
+blogRouter.get("/show-active", blogController.showOneActive) //Show to user
 
-export { userRouter }
+export { blogRouter }
