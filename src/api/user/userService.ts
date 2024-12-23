@@ -22,7 +22,7 @@ export class UserService {
 			let token = await generateToken(user);
 			user.lastLogin = dayjs().toDate();
 			await user.save();
-			return ServiceResponse.success<ApiResponse>("User logged in successfully", { msg: "User logged in successfully", status: true, data: { token } }, StatusCodes.OK);
+			return ServiceResponse.success<ApiResponse>("User logged in successfully", { data: { token } }, StatusCodes.OK);
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);
@@ -50,7 +50,7 @@ export class UserService {
 				role
 			}).save();
 			let token = await generateToken(newUser);
-			return ServiceResponse.success<ApiResponse>("User registered successfully", { msg: "User logged in successfully", status: true, data: { token } }, StatusCodes.OK);
+			return ServiceResponse.success<ApiResponse>("User registered successfully", { data: { token } }, StatusCodes.OK);
 		} catch (err) {
 			const errorMessage = `Error while logging in: ${(err as Error).message}`;
 			logger.error(errorMessage);

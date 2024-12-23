@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 const apiResponse = z.object({
-	msg: z.string().optional(),
-	status: z.boolean().optional(),
+	// msg: z.string().optional(),
+	// status: z.boolean().optional(),
 	data:z.any().optional()
 });
 

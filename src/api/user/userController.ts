@@ -2,7 +2,6 @@ import type { Request, RequestHandler, Response } from "express";
 
 import { userService } from "@/api/user/userService";
 import { handleServiceResponse } from "@/common/utils/httpHandlers";
-import { validateUser } from "@/common/middleware/auth";
 
 class UserController {
 	public signIn: RequestHandler = async (req: Request, res: Response) => {
